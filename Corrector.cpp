@@ -24,11 +24,54 @@
 void	Diccionario			(char *szNombre, char szPalabras[][TAMTOKEN], int iEstadisticas[], int &iNumElementos)
 {
 
-	//Sustituya estas lineas por su código
-	iNumElementos=1;
-	strcpy(szPalabras[0],"AquiVaElDiccionario");
-	iEstadisticas[0] = 1; // la primer palabra aparece solo una vez.
+	FILE* fpDicc;
+	char szPalabraRecib[NUMPALABRAS][TAMTOKEN];
+	char szPalabraDetec[TAMTOKEN];
+	int  szCaracter, i, j, FinOrd, iControl;
+	fopen_s(&fpDicc, szNombre, "r");
+	if (fpDicc == NULL)
+		return;
+
+	iNumElementos = 0; j = 0;
+	szCaracter = fgetc(fpDicc);
+	while (feof(fpDicc) == 0)
+	{
+		if (!((szCaracter == '\t') || (szCaracter == '\n') || (szCaracter == '\r') || (szCaracter == ' ') || (szCaracter == ')') || (szCaracter == ',') || (szCaracter == '.') || (szCaracter == ';') || (szCaracter == '(')))
+		{
+			szPalabraRecib[iNumElementos][j] = towlower((char)szCaracter);
+			szCaracter = fgetc(fpDicc);
+			j++;
+		}
+		else
+		{
+			if (j > 0)
+			{
+				szPalabraRecib[iNumElementos][j] = '\0';
+				iEstadisticas[iNumElementos] = 1;
+
+				if (iNumElementos > 0)
+				{
+					for (i = 0; i < iNumElementos; i++)
+						if (strcmp(szPalabraRecib[i], szPalabraRecib[iNumElementos]) == 0)
+						{
+							iEstadisticas[i] = iEstadisticas[i] + 1;
+							i = iNumElementos;
+							iNumElementos = iNumElementos - 1;
+						}
+				}
+
+				iNumElementos++;
+				j = 0;
+			}
+			szCaracter = fgetc(fpDicc);
+		}
+	}
+	fclose(fpDicc);
+
 }
+
+
+
 
 /*****************************************************************************************************************
 	ListaCandidatas: Esta funcion recupera desde el diccionario las palabras validas y su peso
@@ -53,12 +96,15 @@ void	ListaCandidatas		(
 	int &	iNumLista)							//Numero de elementos en la szListaFinal
 {
 
-	//Sustituya estas lineas por su código
+	//Sustituya estas lineas por su c digo
 	strcpy(szListaFinal[0], szPalabrasSugeridas[ 0] ); //la palabra candidata
 	iPeso[0] = iEstadisticas[0];			// el peso de la palabra candidata
 	
 	iNumLista = 1;							//Una sola palabra candidata
 }
+
+
+
 
 /*****************************************************************************************************************
 	ClonaPalabras: toma una palabra y obtiene todas las combinaciones y permutaciones requeridas por el metodo
@@ -71,7 +117,7 @@ void	ClonaPalabras(
 	char	szPalabrasSugeridas[][TAMTOKEN], 	//Lista de palabras clonadas
 	int &	iNumSugeridas)						//Numero de elementos en la lista
 {
-	//Sustituya estas lineas por su código
+	//Sustituya estas lineas por su c digo
 	strcpy(szPalabrasSugeridas[0], szPalabraLeida); //lo que sea que se capture, es sugerencia
 	iNumSugeridas = 1;							//Una sola palabra sugerida
 }
