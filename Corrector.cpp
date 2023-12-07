@@ -145,11 +145,20 @@ void	ListaCandidatas		(
 	int &	iNumLista)							//Numero de elementos en la szListaFinal
 {
 
-	//Sustituya estas lineas por su c digo
-	strcpy(szListaFinal[0], szPalabrasSugeridas[ 0] ); //la palabra candidata
-	iPeso[0] = iEstadisticas[0];			// el peso de la palabra candidata
-	
-	iNumLista = 1;							//Una sola palabra candidata
+int i1, i2;
+
+	iNumLista = 0;
+	for (i1 = 0; i1 < iNumSugeridas; i1++)
+	{
+		for (i2 = 0; i2 < iNumElementos; i2++)
+		{
+			if (strcmp(szPalabrasSugeridas[i1], szPalabras[i2]) == 0)
+			{
+				strcpy_s(szListaFinal[iNumLista], szPalabras[i2]);
+				iPeso[iNumLista++] = iEstadisticas[i2];
+			}
+		}
+	}
 }
 
 
