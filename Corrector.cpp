@@ -98,6 +98,26 @@ szPalabraRecib[iNumElementos][j] = '\0';
 		}
 
 }
+		if (FinOrd == iNumElementos)
+			i = iNumElementos;
+	}
+
+	if (strcmp(szPalabraRecib[0], "") == 0)
+	{
+		for (i = 0; i < iNumElementos; i++)
+		{
+			strcpy_s(szPalabras[i], szPalabraRecib[i + 1]);
+			iEstadisticas[i] = iEstadisticas[i + 1];
+		}
+		iEstadisticas[i] = '\0';
+	}
+	else
+	{
+		iNumElementos++;
+		for (i = 0; i < iNumElementos; i++)
+			strcpy_s(szPalabras[i], szPalabraRecib[i]);
+	}
+}
 
 
 
