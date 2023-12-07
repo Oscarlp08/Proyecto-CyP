@@ -159,6 +159,52 @@ int i1, i2;
 			}
 		}
 	}
+
+int limbo1, limbo2;
+	char limboc1[TAMTOKEN], limboc2[TAMTOKEN];
+
+	i1 = 0;
+	while (iNumLista > i1)
+	{
+		for (i2 = i1 + 1; i2 < iNumLista; i2 = i2 + 1)
+		{
+			if (iPeso[i1] < iPeso[i2])
+			{
+				limbo1 = iPeso[i1];
+				limbo2 = iPeso[i2];
+				strcpy_s(limboc1, szListaFinal[i1]);
+				strcpy_s(limboc2, szListaFinal[i2]);
+
+				iPeso[i1] = limbo2;
+				iPeso[i2] = limbo1;
+				strcpy_s(szListaFinal[i1], limboc2);
+				strcpy_s(szListaFinal[i2], limboc1);
+
+			}
+		}
+		i1++;
+	}
+
+	int n = iNumLista, iii, iNumT = iNumElementos;
+	i1 = 0;
+	while (n > i1)
+	{
+		for (i2 = i1 + 1; i2 <= n; i2++)
+		{
+			if (strcmp(szListaFinal[i1], szListaFinal[i2]) == 0)
+			{
+				for (iii = i2; iii < iNumT; iii++)
+				{
+					strcpy_s(szListaFinal[iii], szListaFinal[iii + 1]);
+					iPeso[iii] = iPeso[iii + 1];
+				}
+				n--;
+				i2--;
+			}
+		}
+		i1++;
+	}
+	iNumLista = n;
 }
 
 
