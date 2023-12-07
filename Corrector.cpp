@@ -68,6 +68,35 @@ void	Diccionario			(char *szNombre, char szPalabras[][TAMTOKEN], int iEstadistic
 	}
 	fclose(fpDicc);
 
+szPalabraRecib[iNumElementos][j] = '\0';
+	iEstadisticas[iNumElementos] = 1;
+
+	for (i = 0; i < iNumElementos; i++)
+		if (strcmp(szPalabraRecib[i], szPalabraRecib[iNumElementos]) == 0)
+		{
+			iEstadisticas[i] = iEstadisticas[i] + 1;
+			strcpy_s(szPalabraRecib[iNumElementos], "");
+			i = iNumElementos;
+		}
+
+	for (i = 0; i < iNumElementos; i++)
+	{
+		FinOrd = 0;
+		for (j = 0; j < iNumElementos; j++)
+		{
+			if (strcmp(szPalabraRecib[j + 1], szPalabraRecib[j]) < 0)
+			{
+				strcpy_s(szPalabraDetec, szPalabraRecib[j]);
+				iControl = iEstadisticas[j];
+				strcpy_s(szPalabraRecib[j], szPalabraRecib[j + 1]);
+				iEstadisticas[j] = iEstadisticas[j + 1];
+				strcpy_s(szPalabraRecib[j + 1], szPalabraDetec);
+				iEstadisticas[j + 1] = iControl;
+			}
+			else
+				FinOrd += 1;
+		}
+
 }
 
 
