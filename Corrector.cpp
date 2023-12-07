@@ -13,6 +13,9 @@
 #include "stdafx.h"
 #include <string.h>
 #include "corrector.h"
+#define LONGI 32
+char abecedario[LONGI + 6] = "abcdefghijklmnñopqrstuvwxyzáéíóú";
+
 //Funciones publicas del proyecto
 /*****************************************************************************************************************
 	DICCIONARIO: Esta funcion crea el diccionario completo
@@ -221,7 +224,48 @@ void	ClonaPalabras(
 	char	szPalabrasSugeridas[][TAMTOKEN], 	//Lista de palabras clonadas
 	int &	iNumSugeridas)						//Numero de elementos en la lista
 {
-	//Sustituya estas lineas por su c digo
-	strcpy(szPalabrasSugeridas[0], szPalabraLeida); //lo que sea que se capture, es sugerencia
-	iNumSugeridas = 1;							//Una sola palabra sugerida
+	char aux[TAMTOKEN]; iNumSugeridas = 0;
+
+	strcpy_s(aux, szPalabraLeida);
+
+	for (int i = 0; i < strlen(szPalabraLeida); i++) {
+
+		for (int j = 0; j < LONGI; j++) {
+			aux[i] = abecedario[j];
+			strcpy_s(szPalabrasSugeridas[iNumSugeridas++], aux);
+		} aux[i] = szPalabraLeida[i];
+	}
+
+	int k;
+	for (k = 1; k < strlen(szPalabraLeida) + 1; k++) {
+		aux[k] = szPalabraLeida[k - 1];
+	} 
+
+	aux[k] = '\0';
+
+	for (int i = 0; i < strlen(szPalabraLeida) + 1; i++) {
+
+		for (int j = 0; j < LONGI; j++) {
+			aux[i] = abecedario[j];
+
+			strcpy_s(szPalabrasSugeridas[iNumSugeridas++], aux);
+		}
+		aux[i] = szPalabraLeida[i];
+	}
+
+	int contador = 0;
+	for (int i = 0; i < strlen(szPalabraLeida) && strlen(szPalabraLeida) != 1; i++) {
+
+		for (int j = 0; j < strlen(szPalabraLeida); j++) {
+			if (j != i)
+				aux[contador++] = szPalabraLeida[j];
+
+		} 
+		aux[contador] = '\0';
+
+		strcpy_s(szPalabrasSugeridas[iNumSugeridas++], aux);
+		strcpy_s(aux, szPalabraLeida);
+		contador = 0;
+	}
+
 }
